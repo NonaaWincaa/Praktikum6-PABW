@@ -11,7 +11,7 @@
             theme: {
                 extend: {
                     colors: {
-                        softBluePrimary: '#4A90E2',
+                        softBluePrimary: '#2563EB',
                         softBlueHeader: '#1E3A8A',
                         softBlueBg: '#F0F7FF',
                         softBlueBadge: '#E0F2FE',
@@ -29,17 +29,44 @@
     <!-- Header / Navbar Soft Blue -->
     <header class="bg-softBlueHeader text-white shadow-sm sticky top-0 z-50">
         <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="{{ route('laporbanjir.form') }}" class="flex items-center gap-2 font-bold text-sm tracking-wide">
+            <a href="{{ route('laporbanjir.form') }}" class="flex items-center gap-2 font-bold text-sm tracking-wide hover:opacity-90 transition">
                 <i class="fa-solid fa-triangle-exclamation text-sky-300 text-lg"></i>
                 <span>BPBD LaporBanjir</span>
             </a>
-            <nav class="flex gap-2 text-xs font-medium">
-                <a href="{{ route('laporbanjir.form') }}" class="px-3 py-1.5 rounded-md hover:bg-sky-800 transition flex items-center gap-1.5">
+
+            <nav class="flex items-center gap-2 text-xs font-medium">
+                <!-- Menu Publik (Bisa diakses tanpa login) -->
+                <a href="{{ route('laporbanjir.form') }}" class="px-3 py-1.5 rounded-md hover:bg-blue-800 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-pen-to-square text-sky-300"></i> Buat Laporan
                 </a>
-                <a href="{{ route('laporbanjir.index') }}" class="px-3 py-1.5 rounded-md hover:bg-sky-800 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-list-check text-sky-300"></i> Daftar Laporan
+                <a href="{{ route('students.index') }}" class="px-3 py-1.5 rounded-md hover:bg-blue-800 transition flex items-center gap-1.5 border border-sky-400/30">
+                    <i class="fa-solid fa-graduation-cap text-sky-300"></i> Mahasiswa
                 </a>
+
+                @auth
+                    <!-- Tampil HANYA jika Petugas SUDAH Login -->
+                    <a href="{{ route('laporbanjir.index') }}" class="px-3 py-1.5 rounded-md hover:bg-blue-800 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-check text-sky-300"></i> Daftar Laporan
+                    </a>
+                    <a href="{{ route('petugas.profil') }}" class="px-3 py-1.5 rounded-md hover:bg-blue-800 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-gear text-sky-300"></i> Profil Petugas
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="px-3 py-1.5 bg-red-600/80 hover:bg-red-700 text-white rounded-md transition flex items-center gap-1.5 ms-1">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout ({{ Auth::user()->name }})
+                        </button>
+                    </form>
+                @else
+                    <!-- Tampil HANYA jika BELUM Login -->
+                    <a href="{{ route('login') }}" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-600 text-white rounded-md transition flex items-center gap-1.5 ms-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login
+                    </a>
+                    <a href="{{ route('register') }}" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-plus"></i> Register
+                    </a>
+                @endauth
             </nav>
         </div>
     </header>
